@@ -4,6 +4,9 @@
 [![Total Downloads](https://poser.pugx.org/laravel/framework/downloads)](https://packagist.org/packages/laravel/framework)
 [![License](https://poser.pugx.org/laravel/framework/license)](https://packagist.org/packages/laravel/framework)
 
+## Note
+
+Check out the SPA version of this application using Vue.js [here](https://github.com/HannaKamil/phone-numbers-app-vue).
 
 ## Screenshot
 
@@ -22,7 +25,6 @@
 ```sh
 git clone https://github.com/HannaKamil/phone-numbers-app-jquery.git
 ```
-
 
 ```sh
 cd phone-numbers-app-jquery
@@ -49,6 +51,3 @@ php artisan serve
 ```
 
 Visit `http://localhost:8000` to see your application in action.
- 
-
-
