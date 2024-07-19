@@ -3,58 +3,42 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PhoneNumber;
-use Illuminate\Support\Facades\Validator;
+use App\Services\PhoneNumberService;
 
 class PhoneNumberController extends Controller
 {
+    protected $phoneNumberService;
+
+    public function __construct(PhoneNumberService $phoneNumberService)
+    {
+        $this->phoneNumberService = $phoneNumberService;
+    }
+
     /**
      * Display a listing of the phone numbers.
      */
     public function index(Request $request)
     {
-        $query = PhoneNumber::query();
+        $result = $this->phoneNumberService->getFilteredPhoneNumbers($request);
 
-        // Apply filters if present
-        $this->applyFilters($query, $request);
+        if (isset($result['error'])) {
+            return response()->json(['error' => $result['error']], $result['code']);
+        }
+
+        $phoneNumbers = $result;
 
         if ($request->ajax()) {
-            return $this->handleAjaxRequest($query);
+            return $this->handleAjaxRequest($phoneNumbers);
         } else {
-            return $this->handleRegularRequest($query);
-        }
-    }
-
-    /**
-     * Apply filters to the query.
-     */
-    private function applyFilters($query, $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'country' => 'nullable|string',
-            'state' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
-        }
-
-        if ($request->filled('country')) {
-            $query->where('country', $request->country);
-        }
-
-        if ($request->filled('state')) {
-            $query->where('state', $request->state);
+            return $this->handleRegularRequest($phoneNumbers);
         }
     }
 
     /**
      * Handle AJAX request for phone numbers.
      */
-    private function handleAjaxRequest($query)
+    private function handleAjaxRequest($phoneNumbers)
     {
-        $phoneNumbers = $query->paginate(10);
-
         $html = view('phone_numbers.partials.phone_numbers', compact('phoneNumbers'))->render();
         $pagination = view('phone_numbers.partials.pagination', compact('phoneNumbers'))->render();
 
@@ -67,10 +51,9 @@ class PhoneNumberController extends Controller
     /**
      * Handle regular request for phone numbers.
      */
-    private function handleRegularRequest($query)
+    private function handleRegularRequest($phoneNumbers)
     {
-        $phoneNumbers = $query->paginate(10);
-        $countries = PhoneNumber::select('country')->distinct()->get();
+        $countries = $this->phoneNumberService->getDistinctCountries();
 
         return view('phone_numbers.index', compact('phoneNumbers', 'countries'));
     }
