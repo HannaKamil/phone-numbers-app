@@ -20,12 +20,12 @@
 ### Clone the repository and set up the application
 
 ```sh
-git clone https://github.com/HannaKamil/phone-numbers-app.git
+git clone https://github.com/HannaKamil/phone-numbers-app-jquery.git
 ```
 
 
 ```sh
-cd phone-numbers-app
+cd phone-numbers-app-jquery
 ```
 
 ```sh
