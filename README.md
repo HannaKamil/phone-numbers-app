@@ -6,7 +6,8 @@
 
 
 ## Screenshot
-![](C:\Users\Hanna\Desktop\phone-numbers.png)
+
+![Phone Numbers App Screenshot](public/images/phone-numbers.png)
 
 ## Requirements
 
