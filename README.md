@@ -48,7 +48,6 @@ php artisan serve
 ```
 
 Visit `http://localhost:8000` to see your application in action.
-
  
 
 
